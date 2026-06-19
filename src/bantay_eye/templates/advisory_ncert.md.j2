@@ -1,0 +1,76 @@
+Subject: Responsible disclosure: {{ finding.category }} exposure on {{ finding.ip }}:{{ finding.port }}
+
+To: {{ ncert.email }}
+From: {{ researcher.email }}
+Date: {{ today }}
+
+Dear {{ ncert.authority_name }},
+
+I am writing in my capacity as an independent security researcher with {{ researcher.org or "the OSINT community" }} to report a public-internet exposure that I believe falls within your coordination responsibilities under the National Cybersecurity Plan 2023-2028.
+
+## Finding summary
+
+- Category: {{ finding.category }}
+- Host: {{ finding.ip }}
+- Port: {{ finding.port }}/{{ finding.transport }}
+{% if finding.service %}
+- Service: {{ finding.service }}
+{% endif %}
+{% if finding.product %}
+- Product: {{ finding.product }}{{ (" version " ~ finding.product_version) if finding.product_version else "" }}
+{% endif %}
+{% if finding.org %}
+- Apparent operator: {{ finding.org }}
+{% endif %}
+{% if finding.asn %}
+- ASN: AS{{ finding.asn }}{{ (" (" ~ finding.asn_name ~ ")") if finding.asn_name else "" }}
+{% endif %}
+{% if finding.hostname %}
+- Hostname: {{ finding.hostname }}
+{% endif %}
+{% if finding.country %}
+- Geolocation: {{ finding.city or "unknown city" }}, {{ finding.country }}
+{% endif %}
+
+## Methodology
+
+This finding was identified through passive observation via the Bantay-Eye exposure survey toolkit, which queries the Shodan, Censys, and ZoomEye internet-wide scan datasets. No connection was made to the affected device by the researcher; the information above is sourced entirely from third-party scanner data.
+
+Engines that observed this exposure:
+{% for engine in finding.engines_observed %}
+- {{ engine.value }}
+{% endfor %}
+
+{% if finding.honeypot_signals %}
+## Honeypot assessment
+
+The following heuristic signals were noted on this finding and should be considered when validating:
+{% for signal in finding.honeypot_signals %}
+- {{ signal.value }}
+{% endfor %}
+{% if finding.is_likely_honeypot %}
+The finding is flagged as a **likely honeypot** by the toolkit's heuristics. NCERT-PH may wish to validate before forwarding to the apparent operator.
+{% endif %}
+{% endif %}
+
+## Recommended action
+
+I respectfully request that NCERT-PH coordinate notification of the apparent asset owner, with the goal of bringing the affected service off the public internet, behind appropriate access controls, or remediated through firmware update where applicable.
+
+## Disclosure timeline
+
+I am following a standard {{ timeline_days }}-day coordinated disclosure timeline. If I have not received an acknowledgement within {{ escalation_days }} days of this notice, I will follow up directly. A redacted advisory describing the category and methodology (but not the specific target) may be published at day {{ timeline_days }} as part of an aggregate exposure survey, in line with the Operation Liwanag methodology I publish at https://blog.osintph.info.
+
+## Researcher details
+
+- Name: {{ researcher.name }}
+- Email: {{ researcher.email }}
+- Organisation: {{ researcher.org }}
+{% if researcher.pgp_url %}
+- PGP / security.txt: {{ researcher.pgp_url }}
+{% endif %}
+
+Thank you for the work NCERT-PH does. I am available for any clarification you require.
+
+Respectfully,
+{{ researcher.name }}

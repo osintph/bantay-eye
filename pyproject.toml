@@ -1,0 +1,57 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "bantay-eye"
+version = "0.1.0"
+description = "Defensive internet exposure survey utility. Part of the OSINT-PH tool suite."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+    { name = "Sigmund / OSINT-PH", email = "research@osintph.info" },
+]
+keywords = ["osint", "shodan", "censys", "zoomeye", "asm", "disclosure"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Information Technology",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Security",
+]
+dependencies = [
+    "shodan>=1.31.0",
+    "censys>=2.2.13",
+    "httpx>=0.27.0",
+    "typer>=0.12.0",
+    "rich>=13.7.0",
+    "pydantic>=2.6.0",
+    "tomli>=2.0.1; python_version < '3.11'",
+    "jinja2>=3.1.3",
+    "platformdirs>=4.2.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/osintph/bantay-eye"
+Repository = "https://github.com/osintph/bantay-eye"
+Issues = "https://github.com/osintph/bantay-eye/issues"
+Blog = "https://blog.osintph.info"
+
+[project.scripts]
+bantay-eye = "bantay_eye.cli:app"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/bantay_eye"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "N", "SIM"]
+ignore = ["E501"]

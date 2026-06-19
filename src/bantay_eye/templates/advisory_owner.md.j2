@@ -1,0 +1,68 @@
+Subject: Security advisory: exposed {{ finding.category }} service on {{ finding.ip }}:{{ finding.port }}
+
+To: [security contact for {{ finding.org or "the asset owner" }}]
+From: {{ researcher.email }}
+Date: {{ today }}
+
+Hello,
+
+I am an independent security researcher with {{ researcher.org or "the OSINT community" }}, contacting you in good faith to report a public-internet exposure on infrastructure that appears to belong to your organisation.
+
+## What I observed
+
+- IP address: {{ finding.ip }}
+- Port: {{ finding.port }}/{{ finding.transport }}
+{% if finding.service %}
+- Service: {{ finding.service }}
+{% endif %}
+{% if finding.product %}
+- Product: {{ finding.product }}{{ (" version " ~ finding.product_version) if finding.product_version else "" }}
+{% endif %}
+{% if finding.hostname %}
+- Hostname: {{ finding.hostname }}
+{% endif %}
+{% if finding.asn %}
+- Announcing ASN: AS{{ finding.asn }}{{ (" (" ~ finding.asn_name ~ ")") if finding.asn_name else "" }}
+{% endif %}
+
+This service is responding to unauthenticated requests from the public internet. I did not attempt to authenticate to, query, or otherwise interact with the device. All information above was sourced from third-party internet scanning datasets:
+
+{% for engine in finding.engines_observed %}
+- {{ engine.value }}
+{% endfor %}
+
+## Why this matters
+
+Depending on the service, exposure of this kind can lead to:
+
+- Unauthorised access to data or controls
+- Inclusion in opportunistic credential-stuffing or scanning campaigns
+- Use as a pivot into your internal network
+- Regulatory exposure under the Data Privacy Act of 2012 if personal data is involved
+
+## What I am asking
+
+Please consider one or more of the following:
+
+1. Place the service behind a VPN or zero-trust access proxy
+2. Restrict the source IP range that can reach the service to known administrative ranges
+3. Apply the latest vendor firmware or software update
+4. If the service is no longer needed, decommission it
+
+## Disclosure timeline
+
+I am following a standard {{ timeline_days }}-day coordinated disclosure timeline starting from the date of this notice. If I do not receive an acknowledgement within {{ escalation_days }} days, I will escalate this matter to {{ ncert.authority_name }} ({{ ncert.email }}). A redacted advisory describing the category and methodology (but never your organisation's identifying details) may appear in an aggregate exposure report at day {{ timeline_days }}.
+
+## Contact
+
+- Name: {{ researcher.name }}
+- Email: {{ researcher.email }}
+- Organisation: {{ researcher.org }}
+{% if researcher.pgp_url %}
+- PGP / security.txt: {{ researcher.pgp_url }}
+{% endif %}
+
+I am happy to coordinate a call, work with your incident response team directly, or provide any additional context you need.
+
+Respectfully,
+{{ researcher.name }}

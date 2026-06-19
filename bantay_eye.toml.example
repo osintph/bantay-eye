@@ -1,0 +1,65 @@
+# Bantay-Eye configuration file
+#
+# Copy this to bantay_eye.toml in your working directory, or place it at
+# the platform-appropriate config location (run `bantay-eye config-path`
+# to see where that is on your system).
+#
+# At minimum, fill in the API keys for the engines you intend to use.
+# Engines without keys configured will be skipped automatically.
+
+[engines.shodan]
+enabled = true
+api_key = "YOUR_SHODAN_API_KEY"
+# Polite-mode delay between requests, in seconds.
+# Shodan free tier is roughly 1 request/second; paid tiers allow more.
+min_delay_seconds = 1.0
+
+[engines.censys]
+enabled = true
+api_id = "YOUR_CENSYS_API_ID"
+api_secret = "YOUR_CENSYS_API_SECRET"
+# Censys free tier is 250 search queries per month, no per-second cap.
+# Polite mode here is mostly to be a good citizen.
+min_delay_seconds = 0.5
+
+[engines.zoomeye]
+enabled = true
+api_key = "YOUR_ZOOMEYE_API_KEY"
+# ZoomEye free tier is 10,000 query points per month.
+min_delay_seconds = 1.0
+
+[survey]
+# ISO 3166-1 alpha-2 country code. The default is PH because Bantay-Eye
+# was built for the Operation Liwanag methodology, but the tool is
+# country-agnostic.
+country = "PH"
+# Maximum results to fetch per query, per engine. Most engines page beyond
+# this; the cap exists so that one runaway query does not eat your quota.
+max_results_per_query = 100
+# Output directory for findings and disclosure templates.
+output_dir = "./findings"
+# Honeypot filter mode: "tag" (mark only), "exclude" (drop from output),
+# or "off" (no filtering).
+honeypot_filter = "tag"
+
+[categories]
+# Categories to run when invoking `bantay-eye survey --all`.
+# Available: ics, government, remote_access, telecom, banking, iot, cloud
+enabled = ["ics", "government", "remote_access", "telecom", "iot"]
+
+[disclosure]
+# Default contact details used when generating disclosure templates.
+researcher_name = "Sigmund"
+researcher_email = "research@osintph.info"
+researcher_org = "OSINT-PH"
+researcher_pgp_url = "https://blog.osintph.info/.well-known/security.txt"
+# Default disclosure timeline in days.
+default_timeline_days = 90
+# Escalation timeline if the owner does not acknowledge.
+escalation_timeline_days = 14
+
+[disclosure.ncert]
+# Philippines NCERT-PH / CERT-PH details.
+email = "cybersecurity@dict.gov.ph"
+phone = "+63 2 920 0101 local 1002"
+authority_name = "National Computer Emergency Response Team (NCERT-PH)"

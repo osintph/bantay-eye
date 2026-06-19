@@ -1,0 +1,60 @@
+Subject: Notification: potential personal data exposure on {{ finding.ip }}:{{ finding.port }}
+
+To: complaints@privacy.gov.ph
+From: {{ researcher.email }}
+Date: {{ today }}
+
+To the Honourable Commissioners and Staff of the National Privacy Commission,
+
+I am writing to notify the Commission of a potential exposure of personal data on a public-facing service that appears to be operated by a Philippine entity. I am an independent security researcher with {{ researcher.org or "the OSINT community" }}, and this notification is offered in the spirit of supporting compliance with the Data Privacy Act of 2012 (RA 10173).
+
+## Observation
+
+- IP address: {{ finding.ip }}
+- Port: {{ finding.port }}/{{ finding.transport }}
+{% if finding.service %}
+- Service: {{ finding.service }}
+{% endif %}
+{% if finding.product %}
+- Product: {{ finding.product }}{{ (" version " ~ finding.product_version) if finding.product_version else "" }}
+{% endif %}
+{% if finding.org %}
+- Apparent operator: {{ finding.org }}
+{% endif %}
+{% if finding.asn %}
+- ASN: AS{{ finding.asn }}{{ (" (" ~ finding.asn_name ~ ")") if finding.asn_name else "" }}
+{% endif %}
+
+## Source
+
+This finding was identified through passive observation of publicly accessible internet scan datasets (Shodan, Censys, ZoomEye). I did not connect to the device or attempt to authenticate. I am not in possession of, and have not viewed or downloaded, any personal data from the exposed service.
+
+## Concurrent notifications
+
+I am sending the following concurrent notifications:
+
+1. The apparent asset owner directly, by separate cover, with technical remediation guidance.
+2. {{ ncert.authority_name }} at {{ ncert.email }} for coordinating technical remediation.
+
+This notification to the National Privacy Commission is intended to support the Commission's mandate under Section 7 of RA 10173 to monitor and ensure compliance with the Act.
+
+## Request
+
+I respectfully request that the Commission:
+
+1. Note this finding for monitoring purposes.
+2. If the Commission deems it appropriate, exercise its Section 7(c) authority to compel the operator to investigate whether a personal data breach has occurred and notify affected data subjects in accordance with the Implementing Rules and Regulations.
+
+I do not seek any further role in this matter beyond responsible notification. I am available to provide additional technical context to the Commission if it would assist.
+
+## Contact
+
+- Name: {{ researcher.name }}
+- Email: {{ researcher.email }}
+- Organisation: {{ researcher.org }}
+{% if researcher.pgp_url %}
+- PGP / security.txt: {{ researcher.pgp_url }}
+{% endif %}
+
+Respectfully,
+{{ researcher.name }}
